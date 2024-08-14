@@ -14,11 +14,24 @@ existing model, and how to train a builtin model on a custom dataset.
   [model zoo](MODEL_ZOO.md),
   for example, `mask_rcnn_R_50_FPN_3x.yaml`.
 2. We provide `demo.py` that is able to demo builtin configs. Run it with:
-```
+```sh
+# env
+sa MinerU 
+
+conda install -c conda-forge opencv
+
+# add a lot of shit like qt, mysql, cairo...
+pip install tqdm numpy 
+
 cd demo/
+
+# model start to download by itself
+python demo.py --config-file ../configs/COCO-InstanceSegmentation/mask_rcnn_R_50_FPN_3x.yaml \
+  --input dog.jpg  \
+  --opts MODEL.WEIGHTS detectron2://COCO-InstanceSegmentation/mask_rcnn_R_50_FPN_3x/137849600/model_final_f10217.pkl
+
 python demo.py --config-file ../configs/COCO-InstanceSegmentation/mask_rcnn_R_50_FPN_3x.yaml \
   --input input1.jpg input2.jpg \
-  [--other-options]
   --opts MODEL.WEIGHTS detectron2://COCO-InstanceSegmentation/mask_rcnn_R_50_FPN_3x/137849600/model_final_f10217.pkl
 ```
 The configs are made for training, therefore we need to specify `MODEL.WEIGHTS` to a model from model zoo for evaluation.
@@ -46,7 +59,7 @@ To train a model with "train_net.py", first
 setup the corresponding datasets following
 [datasets/README.md](./datasets/README.md),
 then run:
-```
+```sh
 cd tools/
 ./train_net.py --num-gpus 8 \
   --config-file ../configs/COCO-InstanceSegmentation/mask_rcnn_R_50_FPN_1x.yaml
@@ -54,14 +67,14 @@ cd tools/
 
 The configs are made for 8-GPU training.
 To train on 1 GPU, you may need to [change some parameters](https://arxiv.org/abs/1706.02677), e.g.:
-```
+```sh
 ./train_net.py \
   --config-file ../configs/COCO-InstanceSegmentation/mask_rcnn_R_50_FPN_1x.yaml \
   --num-gpus 1 SOLVER.IMS_PER_BATCH 2 SOLVER.BASE_LR 0.0025
 ```
 
 To evaluate a model's performance, use
-```
+```sh
 ./train_net.py \
   --config-file ../configs/COCO-InstanceSegmentation/mask_rcnn_R_50_FPN_1x.yaml \
   --eval-only MODEL.WEIGHTS /path/to/checkpoint_file

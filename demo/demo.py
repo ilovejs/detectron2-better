@@ -132,6 +132,7 @@ def main() -> None:
                 visualized_output.save(out_filename)
             else:
                 cv2.namedWindow(WINDOW_NAME, cv2.WINDOW_NORMAL)
+                print("Hit ESC after windows open to quit (Not close it by mouse!!!!!)")
                 cv2.imshow(WINDOW_NAME, visualized_output.get_image()[:, :, ::-1])
                 if cv2.waitKey(0) == 27:
                     break  # esc to quit
